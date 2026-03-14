@@ -53,8 +53,7 @@ export default function HomeScreen() {
           <Ionicons name="heart" size={32} color="#f08080" />
           <Text style={styles.logoText}>Mamacare</Text>
         </View>
-        <TouchableOpacity onPress={() => navigation.navigate(isAuthenticated ? 'Profile' : 'Login')}>
-          <Ionicons name="person-circle" size={40} color="#f08080" />
+          <TouchableOpacity onPress={() => navigation.navigate(isAuthenticated ? 'Profile' as never : 'Login' as never)}>          <Ionicons name="person-circle" size={40} color="#f08080" />
         </TouchableOpacity>
       </View>
 

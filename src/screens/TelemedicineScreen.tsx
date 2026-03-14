@@ -112,8 +112,7 @@ export default function TelemedicineScreen() {
           <TouchableOpacity
             key={doctor.id}
             style={styles.doctorCard}
-            onPress={() => navigation.navigate('DoctorProfile' as never, { doctorId: doctor.id } as never)}
-          >
+            onPress={() => (navigation as any).navigate('DoctorProfile', { doctorId: doctor.id })}          >
             <Image source={{ uri: doctor.image }} style={styles.doctorImage} />
             <View style={styles.doctorInfo}>
               <View style={styles.doctorHeader}>
