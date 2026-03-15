@@ -1,9 +1,9 @@
 {
   "expo": {
-    "name": "mamacare-mobile",
+    "name": "MamaCareMobile",
     "slug": "mamacare-mobile",
     "version": "1.0.0",
-    "sdkVersion": "52.0.0",
+    "sdkVersion": "51.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -21,8 +21,6 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": false,
-      "predictiveBackGestureEnabled": false,
       "package": "com.idrees.mamacare"
     },
     "web": {
