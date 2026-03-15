@@ -25,11 +25,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const login = useCallback(async (email: string, password: string): Promise<boolean> => {
     try {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 15000);
+
       const response = await fetch(`${API_BASE_URL}/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
+        signal: controller.signal,
       });
+
+      clearTimeout(timeout);
+
       if (response.ok) {
         const data = await response.json();
         setUser(data.user);
@@ -43,8 +50,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const loginWithGoogle = useCallback(async (email: string, name: string): Promise<boolean> => {
-    setUser({ id: '3', email, name, role: 'user' });
-    return true;
+    try {
+      setUser({ id: '3', email, name, role: 'user' });
+      return true;
+    } catch (error) {
+      return false;
+    }
   }, []);
 
   const logout = useCallback(() => {
