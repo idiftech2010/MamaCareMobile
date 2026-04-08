@@ -50,10 +50,19 @@ export default function HomeScreen() {
       {/* Header */}
       <View style={styles.header}>
         <View style={styles.logoContainer}>
-          <Ionicons name="heart" size={32} color="#f08080" />
+          <View style={styles.logoBadge}>
+            <View style={styles.heartLeft} />
+            <View style={styles.heartRight} />
+            <View style={styles.heartPoint} />
+            <View style={styles.motherHead} />
+            <View style={styles.motherBody} />
+            <View style={styles.babyHead} />
+            <View style={styles.babyBody} />
+          </View>
           <Text style={styles.logoText}>Mamacare</Text>
         </View>
-          <TouchableOpacity onPress={() => navigation.navigate(isAuthenticated ? 'Profile' as never : 'Login' as never)}>          <Ionicons name="person-circle" size={40} color="#f08080" />
+        <TouchableOpacity onPress={() => navigation.navigate(isAuthenticated ? 'Profile' as never : 'Login' as never)}>
+          <Ionicons name="person-circle" size={40} color="#f08080" />
         </TouchableOpacity>
       </View>
 
@@ -160,6 +169,76 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
+  },
+  logoBadge: {
+    width: 40,
+    height: 40,
+    position: 'relative',
+    marginRight: 8,
+  },
+  heartLeft: {
+    position: 'absolute',
+    left: 0,
+    top: 4,
+    width: 18,
+    height: 18,
+    borderRadius: 9,
+    backgroundColor: '#119d46',
+  },
+  heartRight: {
+    position: 'absolute',
+    left: 14,
+    top: 4,
+    width: 18,
+    height: 18,
+    borderRadius: 9,
+    backgroundColor: '#119d46',
+  },
+  heartPoint: {
+    position: 'absolute',
+    left: 6,
+    top: 16,
+    width: 28,
+    height: 28,
+    backgroundColor: '#119d46',
+    transform: [{ rotate: '45deg' }],
+    borderBottomLeftRadius: 16,
+  },
+  motherHead: {
+    position: 'absolute',
+    left: 8,
+    top: 6,
+    width: 16,
+    height: 16,
+    borderRadius: 8,
+    backgroundColor: '#fff',
+  },
+  motherBody: {
+    position: 'absolute',
+    left: 10,
+    top: 16,
+    width: 14,
+    height: 22,
+    borderRadius: 8,
+    backgroundColor: '#fff',
+  },
+  babyHead: {
+    position: 'absolute',
+    left: 20,
+    top: 18,
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    backgroundColor: '#fff',
+  },
+  babyBody: {
+    position: 'absolute',
+    left: 18,
+    top: 26,
+    width: 12,
+    height: 14,
+    borderRadius: 6,
+    backgroundColor: '#fff',
   },
   logoText: {
     fontSize: 24,
