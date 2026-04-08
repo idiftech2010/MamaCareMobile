@@ -12,8 +12,12 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.idrees.mamacare"
     },
     "android": {
       "adaptiveIcon": {
@@ -21,11 +25,28 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.idrees.mamacare",
-      "newArchEnabled": false
+      "newArchEnabled": false,
+      "permissions": []
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro"
     },
+    "plugins": [
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "compileSdkVersion": 34,
+            "targetSdkVersion": 34,
+            "minSdkVersion": 24
+          },
+          "ios": {
+            "deploymentTarget": "13.0"
+          }
+        }
+      ]
+    ],
     "extra": {
       "eas": {
         "projectId": "72079760-d46e-4d3a-8f5a-a069e65dcc3d"
