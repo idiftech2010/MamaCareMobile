@@ -12,6 +12,8 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../contexts/AuthContext';
 
+const API_BASE_URL = 'https://mamacare-backend-n1z7.onrender.com/api';
+
 interface RiskResult {
   level: 'low' | 'medium' | 'high';
   score: number;
@@ -21,7 +23,7 @@ interface RiskResult {
 }
 
 export default function AssessmentScreen() {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, getToken } = useAuth();
   const [isAssessing, setIsAssessing] = useState(false);
   const [riskResult, setRiskResult] = useState<RiskResult | null>(null);
   const [formData, setFormData] = useState({
@@ -31,6 +33,7 @@ export default function AssessmentScreen() {
     bloodSugar: '',
     bodyTemp: '',
     heartRate: '',
+    pregnancyWeek: '',
   });
 
   const handleAssess = async () => {
@@ -40,7 +43,7 @@ export default function AssessmentScreen() {
     }
 
     // Validate
-    const required = ['age', 'systolicBP', 'diastolicBP', 'bloodSugar', 'bodyTemp', 'heartRate'];
+    const required = ['age', 'systolicBP', 'diastolicBP', 'bloodSugar', 'bodyTemp', 'heartRate', 'pregnancyWeek'];
     const missing = required.filter(f => !formData[f as keyof typeof formData]);
     if (missing.length > 0) {
       Alert.alert('Missing Fields', 'Please fill in all fields');
@@ -48,95 +51,40 @@ export default function AssessmentScreen() {
     }
 
     setIsAssessing(true);
-    await new Promise(resolve => setTimeout(resolve, 2000));
 
-    // Calculate risk
-    const age = parseInt(formData.age);
-    const systolicBP = parseInt(formData.systolicBP);
-    const diastolicBP = parseInt(formData.diastolicBP);
-    const bloodSugar = parseFloat(formData.bloodSugar);
-    const bodyTemp = parseFloat(formData.bodyTemp);
-    const heartRate = parseInt(formData.heartRate);
+    try {
+      const token = getToken();
+      const response = await fetch(`${API_BASE_URL}/risk-assessment`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          age: parseInt(formData.age),
+          systolicBP: parseInt(formData.systolicBP),
+          diastolicBP: parseInt(formData.diastolicBP),
+          bloodSugar: parseFloat(formData.bloodSugar),
+          bodyTemp: parseFloat(formData.bodyTemp),
+          heartRate: parseInt(formData.heartRate),
+          pregnancyWeek: parseInt(formData.pregnancyWeek),
+        }),
+      });
 
-    let riskScore = 0;
-    const factors: string[] = [];
-
-    if (bloodSugar > 10) {
-      riskScore += 35;
-      factors.push('⚠️ Elevated blood sugar');
-    } else if (bloodSugar > 8) {
-      riskScore += 20;
-      factors.push('⚡ Higher than optimal blood sugar');
+      if (response.ok) {
+        const result = await response.json();
+        setRiskResult(result.result);
+        Alert.alert('Success', 'Assessment completed successfully!');
+      } else {
+        const error = await response.json();
+        Alert.alert('Assessment Failed', error.error || 'Something went wrong');
+      }
+    } catch (error) {
+      Alert.alert('Network Error', 'Please check your connection and try again');
+      console.error('Assessment error:', error);
+    } finally {
+      setIsAssessing(false);
     }
-
-    if (age > 35) {
-      riskScore += 25;
-      factors.push('⚡ Advanced maternal age');
-    } else if (age < 18) {
-      riskScore += 20;
-      factors.push('⚡ Young maternal age');
-    }
-
-    if (heartRate > 100) {
-      riskScore += 20;
-      factors.push('⚡ Elevated heart rate');
-    }
-
-    if (systolicBP > 140 || diastolicBP > 90) {
-      riskScore += 25;
-      factors.push('⚠️ High blood pressure');
-    } else if (systolicBP > 130 || diastolicBP > 85) {
-      riskScore += 15;
-      factors.push('⚡ Elevated blood pressure');
-    }
-
-    if (bodyTemp > 38) {
-      riskScore += 10;
-      factors.push('⚡ Fever detected');
-    }
-
-    let level: 'low' | 'medium' | 'high';
-    let recommendations: string[];
-
-    if (riskScore >= 60) {
-      level = 'high';
-      recommendations = [
-        '🚨 Schedule immediate consultation',
-        '📊 Monitor vitals every 4 hours',
-        '🛌 Rest and avoid strenuous activities',
-        '💧 Stay hydrated',
-      ];
-    } else if (riskScore >= 30) {
-      level = 'medium';
-      recommendations = [
-        '📅 Schedule check-up within the week',
-        '📈 Monitor blood pressure daily',
-        '🥗 Maintain balanced diet',
-        '📝 Track symptoms',
-      ];
-    } else {
-      level = 'low';
-      recommendations = [
-        '✅ Continue regular checkups',
-        '🏃‍♀️ Stay active with moderate exercise',
-        '📊 Monitor vitals weekly',
-        '😊 Enjoy your pregnancy!',
-      ];
-    }
-
-    if (factors.length === 0) {
-      factors.push('✅ All vitals within normal range');
-    }
-
-    setRiskResult({
-      level,
-      score: riskScore,
-      confidence: Math.min(95, 70 + Math.random() * 20),
-      factors,
-      recommendations,
-    });
-
-    setIsAssessing(false);
   };
 
   const getRiskColor = (level: string) => {
@@ -222,6 +170,22 @@ export default function AssessmentScreen() {
               value={formData.bodyTemp}
               onChangeText={(text) => setFormData({ ...formData, bodyTemp: text })}
             />
+          </View>
+        </View>
+
+        <View style={styles.inputRow}>
+          <View style={styles.inputContainer}>
+            <Text style={styles.inputLabel}>Pregnancy Week</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="12"
+              keyboardType="numeric"
+              value={formData.pregnancyWeek}
+              onChangeText={(text) => setFormData({ ...formData, pregnancyWeek: text })}
+            />
+          </View>
+          <View style={styles.inputContainer}>
+            {/* Empty container for layout balance */}
           </View>
         </View>
 

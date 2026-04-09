@@ -114,12 +114,6 @@ export default function LoginScreen() {
             <Text style={styles.signupLink}>Sign Up</Text>
           </TouchableOpacity>
         </View>
-
-        <View style={styles.demoContainer}>
-          <Text style={styles.demoTitle}>Demo Credentials:</Text>
-          <Text style={styles.demoText}>Admin: admin@mamacare.app / admin123</Text>
-          <Text style={styles.demoText}>User: test@example.com / any password</Text>
-        </View>
       </View>
     </View>
   );
@@ -234,20 +228,5 @@ const styles = StyleSheet.create({
     color: '#f08080',
     fontSize: 14,
     fontWeight: '600',
-  },
-  demoContainer: {
-    marginTop: 24,
-    padding: 16,
-    backgroundColor: '#fef3c7',
-    borderRadius: 12,
-  },
-  demoTitle: {
-    fontWeight: '600',
-    color: '#92400e',
-    marginBottom: 8,
-  },
-  demoText: {
-    color: '#92400e',
-    fontSize: 13,
   },
 });

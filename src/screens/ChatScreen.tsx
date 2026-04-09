@@ -34,7 +34,7 @@ export default function ChatScreen() {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: "Hello! I'm MamaCare AI, your maternal health assistant. I'm here to answer your questions about pregnancy, nutrition, symptoms, and more. How can I help you today?",
+      text: "Hello! I'm MamaCare 24/7 AI Support, your maternal health assistant. I'm here to answer your questions about pregnancy, nutrition, symptoms, and more. How can I help you today?",
       sender: 'ai',
       timestamp: new Date(),
     },
