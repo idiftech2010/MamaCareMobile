@@ -96,6 +96,10 @@ export default function AssessmentScreen() {
     }
   };
 
+  const getHealthScore = (riskScore: number) => {
+    return Math.max(0, 100 - riskScore);
+  };
+
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       <View style={styles.header}>
@@ -226,6 +230,11 @@ export default function AssessmentScreen() {
             <View style={styles.progressBar}>
               <View style={[styles.progressFill, { width: `${riskResult.confidence}%` }]} />
             </View>
+          </View>
+
+          <View style={styles.scoreContainer}>
+            <Text style={styles.scoreLabel}>Health Score</Text>
+            <Text style={styles.scoreValue}>{getHealthScore(riskResult.score).toFixed(0)}/100</Text>
           </View>
 
           <View style={styles.section}>
@@ -362,6 +371,23 @@ const styles = StyleSheet.create({
     height: '100%',
     backgroundColor: '#f08080',
     borderRadius: 4,
+  },
+  scoreContainer: {
+    backgroundColor: '#f0f8f5',
+    padding: 12,
+    borderRadius: 12,
+    marginBottom: 16,
+    alignItems: 'center',
+  },
+  scoreLabel: {
+    fontSize: 12,
+    color: '#666',
+    marginBottom: 4,
+  },
+  scoreValue: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: '#22c55e',
   },
   section: {
     marginTop: 16,

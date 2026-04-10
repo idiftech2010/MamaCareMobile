@@ -165,7 +165,7 @@ export default function ChatScreen() {
         <View style={styles.header}>
           <View style={styles.headerContent}>
             <View style={styles.headerTitle}>
-              <Text style={styles.headerHeading}>MamaCare AI</Text>
+              <Text style={styles.headerHeading}>MamaCare 24/7 AI Support</Text>
               <Text style={styles.headerSubtitle}>Always here for you</Text>
             </View>
           </View>
